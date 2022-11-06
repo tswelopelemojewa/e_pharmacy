@@ -308,7 +308,7 @@ class Dispense(models.Model):
         return str(self.medical_record.patient_id)
     
     def get_absolute_url(self):
-        return reverse('dispense-list')
+        return reverse('prescription-list')
     
     
 class Reject(models.Model):

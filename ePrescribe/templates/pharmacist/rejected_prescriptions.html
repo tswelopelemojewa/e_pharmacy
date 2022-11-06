@@ -8,16 +8,38 @@
 
     <h2>Rejected prescriptions</h2>
 
-    {% for rej in rejected %}
-    <div id="spacing">
-        <div class="card">
-            <div class="card-body">
-                <p>{{rej.medical_record.patient_id}} {{rej.medical_record.patient_id.surname}}</p>
-                <a href={% url "reject-detail" rej.id %} class="btn btn-outline-primary">View Details</a>
-            </div>
-        </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <th>Doctor</th>
+          <th>Patient</th>
+          <th>pharmacy</th>
+          <th>pharmacist</th>
+          <th>Reason</th>
+          <th>Contradictions</th>
+
+            <tbody>
+                {% for rej in rejected %}
+                <tr>
+                    <td>{{rej.medical_record.doctor}}</td>
+                    <td>{{rej.medical_record.patient_id}}</td>
+                    <td>{{rej.pharmacy}}</td>
+                    <td>{{rej.pharmacist}}</td>
+                    <td>{{rej.reason}}</td>
+                    <td>
+                        {% if rej.medical_record.active_ingridients == rej.contra_indication.medicine_id %}
+
+                            <p>There is a Medical Contra indication in the patient's prescription!!</p>
+                        {% else %}
+                            <p>None</P>
+                        {% endif %}
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-        {% endfor %}
+
     {% else %}
         <h3>No rejected prescriptions yet</h3>
     {% endif %}
