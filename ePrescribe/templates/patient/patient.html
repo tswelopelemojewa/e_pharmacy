@@ -1,0 +1,88 @@
+{% extends 'ePrescribe\components\header.html' %}
+
+{% block body %}
+    {% for msg in messages %}
+        <div class="bg-success text-white">
+            <p class="text-center box-sizing">{{msg}}</p>
+        </div>
+        <br><br>
+    {% endfor %}
+    <div class="patient_action">
+        {% if user.is_admin or user.is_patient %}
+        <a href="{% url 'patient-create' %}"><button class="btn btn-primary">Add Patient</button></a>
+        {% endif %}
+        {% if user.is_doctor or user.is_pharmacist %}
+      <a href="{% url 'patient-list' %}" class="btn btn-primary">Patient</a>
+        {% endif %}
+        {% if user.is_patient or user.is_doctor or user.is_admin %}
+      <a href="{% url 'medhist-list' %}" class="btn btn-success"> Medical History</a>
+        <a href="{% url 'med-rec-list' %}" class="btn btn-success"> Medical Record</a>
+        {% endif %}
+        {% if user.is_patient or user.is_doctor or user.is_admin or user.is_pharmacist %}
+        <a href="{% url 'prescription-list' %}" class="btn btn-success"> Prescription</a>
+        {% endif %}
+        {% if user.is_admin or user.is_doctor %}
+        <a href="{% url 'med-int-list' %}" class="btn btn-success"> Medical Interactions</a>
+        <a href="{% url 'cont-ind-list' %}" class="btn btn-success"> Contradictions</a>
+        {% endif %}
+    </div>
+    <br>
+    {% if user.is_pharmacist or user.is_patient %}
+
+    {% if user.is_patient %}
+            <p>Welcome {{user.username}}</p>
+            <p>Enter ID number below to view your prescriptions</p>
+            {% endif %}
+
+            <form method=Get>
+                {{filter.form}}
+                <button type="submit">Search</button>
+            </form>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-sm">
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Id Number</th>
+        <th>Address</th>
+        <th>Contact Number</th>
+        <th>Email</th>
+        <th>Date of Birth</th>
+        <th>Gender</th>
+          {% if user.is_patient or user.is_admin %}
+        <th>Action</th>
+          {% endif %}
+
+        <tbody>
+
+
+          
+
+
+            
+            {% for patient in filter.qs %}
+            <tr>
+              <td>{{patient.name}}</td>
+              <td>{{patient.surname}}</td>
+              <td>{{patient.id_number}}</td>
+              <td>{{patient.address}}<br>{{patient.city}}<br>{{patient.suburb}}<br>{{patient.postal_code}}<br>{{patient.province}}</td>
+              <td>{{patient.contact_number}}</td>
+              <td>{{patient.email}}</td>
+              <td>{{patient.dob}}</td>
+              <td>{{patient.gender}}</td>
+              {% if user.is_patient or user.is_admin %}
+              <td><a href="{% url 'patient-update' patient.id %}" class="btn btn-primary">Edit</a>
+              {% endif %}
+              {% if user.is_admin %}<a href="{% url 'patient-delete' patient.id %}" class="btn btn-danger">Delete</a></td>
+              {% endif %}
+          </tr>
+
+            {% endfor %}
+
+        {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+
+{% endblock %}
