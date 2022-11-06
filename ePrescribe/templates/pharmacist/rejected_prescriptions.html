@@ -4,6 +4,8 @@
 
 {% block body %}
 
+    {% if rejected %}
+
     <h2>Rejected prescriptions</h2>
 
     {% for rej in rejected %}
@@ -16,5 +18,7 @@
         </div>
     </div>
         {% endfor %}
-
+    {% else %}
+        <h3>No rejected prescriptions yet</h3>
+    {% endif %}
 {% endblock %}

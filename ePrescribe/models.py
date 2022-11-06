@@ -347,8 +347,8 @@ class Prescription(models.Model):
     status = models.CharField(max_length=10, choices=status, default="prescribed")
         # models.ForeignKey(City, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return str(self.patient)
 
     def get_absolute_url(self):
         return reverse('prescription-list')

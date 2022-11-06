@@ -21,7 +21,13 @@
         <a href="{% url 'med-int-list' %}" class="btn btn-success"> Medical Interactions</a>
         <a href="{% url 'cont-ind-list' %}" class="btn btn-success"> Contradictions</a>
         {% endif %}
+        
+        {% if user.is_pharmacist or user.is_admin or user.is_doctor %}
+        <a href={% url "reject-list" %}><button class="btn btn-dark">Rejected</button></a>
+        {% endif %}
+        
     </div>
+
     <br>
     <div class="table-responsive">
       <table class="table table-striped table-sm">
@@ -34,16 +40,17 @@
         <th>Strength</th>
         <th>Units</th>
         <th>Schedule</th>
-          {% if user.is_doctor or user.is_admin%}
+          {% if user.is_doctor or user.is_admin or user.is_pharmacist %}
         <th>Action</th>
           {% endif %}
+
 
         <tbody>
 
         {% for medrec in all_MedicalRecord %}
                 <tr>
                     <td>{{medrec.doctor}}</td>
-                    <td>{{medrec.patient}}</td>
+                    <td>{{medrec.patient_id}}</td>
                     <td>{{medrec.disease_id}}</td>
                     <td>{{medrec.medication_name}}</td>
                     <td>{{medrec.active_ingridients}}</td>
@@ -56,9 +63,22 @@
                         <a href="{% url 'med-rec-update' medrec.id %}" class="btn btn-info">Edit</a>
                         <a href="{% url 'med-rec-delete' medrec.id %}" class="btn btn-danger">Delete</a>
                     </td>
+                    {% elif user.is_pharmacist%}
+                    <td>
+                      <a href="{% url "dispense" medrec.id%}">
+                        <button class="btn btn-info">dispense</button>
+                      </a>
+                      <a href="{% url "reject" medrec.id %}">
+                          <button class="btn btn-danger" >Reject</button>
+                      </a>
+                  </td>
                     {% endif %}
+                   
+                    
                 </tr>
+                
         {% endfor %}
+        
         </tbody>
       </table>
     </div>

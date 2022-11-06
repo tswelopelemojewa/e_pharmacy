@@ -6,7 +6,7 @@
             <p class="text-center box-sizing">{{msg}}</p>
         </div>
         <br><br>
-    {% endfor %}
+    {% endfor %} 
     <div class="patient_action">
         <a href="{% url 'patient-list' %}"><button class="btn btn-success">Patient</button></a>
           {% if user.is_doctor or user.is_patient or user.is_admin %}
